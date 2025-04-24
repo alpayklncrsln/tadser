@@ -6,6 +6,7 @@ use App\Enums\DayEnum;
 use App\Enums\TypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -32,7 +33,10 @@ class Customer extends Model
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class, 'customer_id');
+    }
 
-        // by: HakanKorkz Kral
+    public function routes(): BelongsToMany
+    {
+        return $this->belongsToMany(Route::class, 'route_customer', 'customer_id', 'route_id');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Filament\Resources\RouteResource\Pages;
 
 use App\Filament\Resources\RouteResource;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Support\Facades\Auth;
 
 class CreateRoute extends CreateRecord
 {
@@ -14,5 +15,12 @@ class CreateRoute extends CreateRecord
         return [
 
         ];
+    }
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['user_id'] = Auth::id();
+
+        return $data;
     }
 }
