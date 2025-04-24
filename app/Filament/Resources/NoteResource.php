@@ -11,6 +11,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
@@ -45,10 +46,12 @@ class NoteResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('notable_id')->options(fn()=> Customer::pluck('name', 'id')->toArray())->searchable()->columnSpanFull(),
-                DateTimePicker::make('start_at')->minDate(now()),
-                DateTimePicker::make('end_at'),
-                Textarea::make('description')->columnSpanFull(),
+                Select::make('notable_id')->options(fn()=> Customer::pluck('name', 'id')->toArray())
+                    ->label('Müşteri')
+                    ->searchable()->columnSpanFull(),
+                DateTimePicker::make('start_at')->required()->label('Başlangış Tarihi'),
+                DateTimePicker::make('end_at')->required()->label('Bitis Tarihi'),
+                Textarea::make('description')->columnSpanFull()->columnSpanFull()->label('Açıklama'),
 
                 Placeholder::make('created_at')
                     ->label('Created Date')
@@ -65,9 +68,8 @@ class NoteResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('notable.name')->label('Müşteri Adı'),
-
-                TextColumn::make('start_at')->dateTime(),
-                TextColumn::make('end_at')->dateTime(),
+                TextColumn::make('start_at')->dateTime()->label('Başlangış Tarihi'),
+                TextColumn::make('end_at')->dateTime()->label('Bitis Tarihi'),
             ])
             ->filters([
                 TrashedFilter::make()
@@ -99,6 +101,7 @@ class NoteResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
+            ->with(['customer'])
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);

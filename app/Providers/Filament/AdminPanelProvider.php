@@ -56,7 +56,7 @@ class AdminPanelProvider extends PanelProvider
             ->spa()
             ->plugins([
                 BreezyCore::make()->enableTwoFactorAuthentication()->myProfile(),
-                FilamentFullCalendarPlugin::make()
+                FilamentFullCalendarPlugin::make()->selectable(),
             ]);
     }
 }
