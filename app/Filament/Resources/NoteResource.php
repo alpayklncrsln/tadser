@@ -101,7 +101,7 @@ class NoteResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->with(['customer'])
+
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);

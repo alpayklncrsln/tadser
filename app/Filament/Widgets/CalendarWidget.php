@@ -8,9 +8,7 @@ use App\Models\Note;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Saade\FilamentFullCalendar\Actions\CreateAction;
 use Saade\FilamentFullCalendar\Widgets\FullCalendarWidget;
 
@@ -33,9 +31,10 @@ class CalendarWidget extends FullCalendarWidget
     public function getFormSchema(): array
     {
         return [
-            Select::make('notable_id')->label('Müşteri')->options(fn()=> Customer::pluck('name', 'id')->toArray())->searchable()->columnSpanFull(),
+            Select::make('notable_id')->label('Müşteri')->options(fn()=> Customer::get()->pluck('name', 'id')->toArray())
+                ->searchable()->columnSpanFull(),
                 Textarea::make('description')->ColumnSpanFull()->label('Açıklama'),
-                DateTimePicker::make('start_at') ->required()->label('Başlangış Tarihi'),
+                DateTimePicker::make('start_at') ->required()->label('Başlangıç Tarihi'),
                 DateTimePicker::make('end_at')->required()->label('Bitis Tarihi'),
         ];
     }
